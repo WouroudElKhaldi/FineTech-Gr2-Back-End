@@ -1,8 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+import { Model } from "sequelize";
+export default (sequelize, DataTypes) => {
   class Goal extends Model {
     /**
      * Helper method for defining associations.
@@ -13,14 +10,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Goal.init({
-    target: DataTypes.INTEGER,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
-    achieved: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'Goal',
-  });
+  Goal.init(
+    {
+      target: DataTypes.INTEGER,
+      startDate: DataTypes.DATE,
+      endDate: DataTypes.DATE,
+      achieved: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: "Goal",
+    }
+  );
   return Goal;
 };

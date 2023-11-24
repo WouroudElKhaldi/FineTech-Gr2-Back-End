@@ -1,6 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
+import { Model } from "sequelize";
+export default (sequelize, DataTypes) => {
   class Category extends Model {
     /**
      * Helper method for defining associations.
@@ -19,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   Category.init(
     {
       name: DataTypes.STRING,
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM("Income", "Outcome"),
     },
     {
       sequelize,

@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
      * Helper method for defining associations.
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       dob: DataTypes.DATE,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
-      role: DataTypes.ENUM,
+      role: DataTypes.ENUM("Admin", "Manager", "Accountent"),
     },
     {
       sequelize,
