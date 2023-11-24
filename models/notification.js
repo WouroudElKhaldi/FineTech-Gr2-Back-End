@@ -7,8 +7,12 @@ export default (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      
       // define association here
+      Notification.hasOne(models.NotificationModel, {
+        foreignKey: "transactionId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   Notification.init({

@@ -9,6 +9,7 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Transaction.belongsTo(models.UserModel);
+      Transaction.belongsTo(models.NotificationModel);
       Transaction.belongsTo(models.CategoryModel);
     }
   }
