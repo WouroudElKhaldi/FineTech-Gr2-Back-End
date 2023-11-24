@@ -1,19 +1,26 @@
+// In your main application file (e.g., server.js)
 import sequelize from "./config/db.js";
 import express from "express";
-import "dotenv/config.js";
-import cors from "cors";
-// Create an instance of Express
+import transactionRoutes from "../routes/transactionRoutes.js";
+
 const app = express();
 
 app.use(express.json());
-app.use(cors());
 
-// Define your routes or other middleware here
+// Sync the models only once when the application starts
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Database synchronized successfully");
+  })
+  .catch((error) => {
+    console.error("Failed to synchronize database: ", error);
+  });
 
-// Define the port where your application will listen
+app.use("/api/transactions", transactionRoutes);
+
 const port = process.env.PORT || 3000;
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
