@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Transaction extends Model {
     /**
      * Helper method for defining associations.
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transaction.init(
     {
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM("Income", "Outcome"),
       date: DataTypes.DATE,
       amount: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
