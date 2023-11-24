@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
+    "username": "team2ft",
+    "password": "rayan@2000",
+    "database": "companyfinancial",
+    "host": "db4free.net",
     "dialect": "mysql"
   },
   "test": {
