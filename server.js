@@ -1,7 +1,7 @@
 // In your main application file (e.g., server.js)
 import sequelize from "./config/db.js";
 import express from "express";
-import router from "./routes/transactionRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 const app = express();
 
@@ -17,7 +17,7 @@ sequelize
     console.error("Failed to synchronize database: ", error);
   });
 
-app.use("/transactions", router);
+app.use("/transactions", transactionRoutes);
 
 const port = process.env.PORT || 3000;
 
