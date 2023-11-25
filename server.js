@@ -6,6 +6,7 @@ import notificationRouter from "./routes/notificationRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
 import calculationRoute from './routes/calculationController.js'
 
+
 const app = express();
 
 app.use(express.json());
@@ -25,7 +26,7 @@ app.use('/notifications' , notificationRouter )
 app.use('/categories' , categoryRouter)
 app.use('/calculate' , calculationRoute)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
