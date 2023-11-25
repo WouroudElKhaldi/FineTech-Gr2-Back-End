@@ -5,6 +5,7 @@ import transactionRoutes from "./routes/transactionRoutes.js";
 import notificationRouter from "./routes/notificationRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
 import calculationRoute from './routes/calculationController.js'
+import userRouter from './routes/userRoutes.js'
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use("/transactions", transactionRoutes);
 app.use('/notifications' , notificationRouter )
 app.use('/categories' , categoryRouter)
 app.use('/calculate' , calculationRoute)
+app.use('/user', userRouter)
 
 const port = process.env.PORT || 4000;
 
