@@ -2,26 +2,37 @@ import express from "express";
 import {
   createTransaction,
   // getTransaction,
-  // getTransactions,
-  // deleteTransaction,
-  // updateTransaction,
+  getTransactions,
+  deleteTransaction,
+  updateTransaction,
+  getTransactionsByCategory,
+  getTransByType,
 } from "../controller/transactionControler.js";
 
-const router = express.Router();
+const transactionRoutes = express.Router();
 
 // // GET all Transaction
-// router.get("/", getTransactions);
+transactionRoutes.get("/get", getTransactions);
 
 // // GET a single Transaction
-// router.get("/:id", getTransaction);
+// routransactionRoutester.get("/:id", getTransaction);
 
 // // POST a new Transaction
-router.post("/create", createTransaction);
+transactionRoutes.post("/create", createTransaction);
 
 // // DELETE a Transaction
-// router.delete("/:id", deleteTransaction);
+transactionRoutes.delete("/:id", deleteTransaction);
 
-// // // // UPDATE a category
-// router.patch("/:id", updateTransaction);
+// // // // UPDATE a Transaction
+transactionRoutes.patch("/:id", updateTransaction);
 
-export default router;
+// // // // get transaction by  categoryID
+transactionRoutes.get(
+  "/transactionsByCategory/:categoryId",
+  getTransactionsByCategory
+);
+
+//// //// ///  get transaction by Type
+transactionRoutes.get("/getTransByType/:type", getTransByType);
+
+export default transactionRoutes;
