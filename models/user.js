@@ -22,6 +22,7 @@ export default (sequelize, DataTypes) => {
       dob: DataTypes.DATE,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      image: DataTypes.STRING,
       role: DataTypes.ENUM("Admin", "Manager", "Accountent"),
     },
     {
