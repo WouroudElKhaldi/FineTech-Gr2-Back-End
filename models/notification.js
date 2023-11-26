@@ -16,7 +16,6 @@ export default (sequelize, DataTypes) => {
     }
   }
   Notification.init({
-    date: DataTypes.DATE,
     message: DataTypes.STRING,
     transactionId: DataTypes.INTEGER
   }, {
