@@ -1,6 +1,6 @@
 import db from "../models/index.js";
 
-const {NotificationModel} = db ;
+const {NotificationModel , TransactionModel} = db ;
 
 export const addNotification = async (req , res) =>{
     try{

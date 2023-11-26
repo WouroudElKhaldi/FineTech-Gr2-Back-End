@@ -1,8 +1,25 @@
 import db from '../models/index.js';
+import sequelize from 'sequelize'
 
 const { GoalModel } = db;
 
-
+export const getGoals = async (req , res) => {
+  try {
+    const Goals = await GoalModel.findAll({
+      order: [['createdAt', 'DESC']],
+    });
+    return res.status(200).json({
+      msg: 'Fetched all goals successfully',
+      data: Goals
+    });
+  } catch (error) {
+    console.log('Failed');
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error
+    });
+  }
+}
 
 export const addGoal = async (req, res) => {
     try {
@@ -48,7 +65,7 @@ export const addGoal = async (req, res) => {
 };
 
 
-export const getGoal = async (req, res) => {
+export const getGoalById = async (req, res) => {
     try {
       const goalId = req.body.id; 
   
@@ -121,3 +138,36 @@ export const editGoal = async (req, res) => {
       });
     }
   };
+
+// get goals between specifc date for the report 
+export const getGoalsByDate = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: 'Please provide start date and end date',
+      });
+    }
+
+    const goals = await GoalModel.findAll({
+      where: {
+        startDate: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+        endDate: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+    });
+
+    return res.status(200).json({
+      goals,
+    });
+  } catch (error) {
+    console.error('Error fetching goals:', error);
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error,
+    });
+  }
+};

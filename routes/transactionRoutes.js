@@ -7,6 +7,7 @@ import {
   updateTransaction,
   getTransactionsByCategory,
   getTransByType,
+  getTransactionsByDate
 } from "../controller/transactionControler.js";
 
 const transactionRoutes = express.Router();
@@ -32,7 +33,10 @@ transactionRoutes.get(
   getTransactionsByCategory
 );
 
+// get transaction by date 
+transactionRoutes.post('/getByDate' , getTransactionsByDate)
+
 //// //// ///  get transaction by Type
-transactionRoutes.get("/getTransByType/:type", getTransByType);
+transactionRoutes.get("/getByType/:type", getTransByType);
 
 export default transactionRoutes;

@@ -1,7 +1,8 @@
 import db from "../models/index.js";
-const {UserModel , TransactionModel} = db ;
+const {UserModel , TransactionModel , CategoryModel} = db ;
 import sequelize from 'sequelize';
 
+// users number in total 
 export const getTotalUsers = async (req , res) => {
     try{
         const totalUsers = await UserModel.count() ;
@@ -20,6 +21,7 @@ export const getTotalUsers = async (req , res) => {
     }
 }
 
+// users number by role
 export const getUsersByRole = async (req, res) => {
     try {
       const userStats = await UserModel.findAll({
@@ -48,7 +50,7 @@ export const getUsersByRole = async (req, res) => {
     }
 };
 
-// transactions 
+// transactions total income
 export const sumIncome = async (req, res) => {
   try {
     const Trans = await TransactionModel.sum('amount')
@@ -77,7 +79,7 @@ export const sumIncome = async (req, res) => {
   }
 };
 
-
+// total outcome 
 export const sumOutcome = async (req, res) => {
   try {
     const Trans = await TransactionModel.sum('amount')
@@ -102,6 +104,147 @@ export const sumOutcome = async (req, res) => {
     return res.status(500).json({
       msg: 'Failed',
       error: error.message,
+    });
+  }
+};
+
+// profit 
+export const calculateProfit = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: 'Please provide start date and end date',
+      });
+    }
+
+    const transactions = await TransactionModel.findAll({
+      where: {
+        date: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+    });
+
+    const totalIncome = transactions.reduce(
+      (sum, transaction) =>
+        transaction.type === 'Income' ? sum + transaction.amount : sum,
+      0
+    );
+
+    const totalOutcome = transactions.reduce(
+      (sum, transaction) =>
+        transaction.type === 'Outcome' ? sum + transaction.amount : sum,
+      0
+    );
+
+    const profit = totalIncome - totalOutcome;
+
+    return res.status(200).json({
+      totalIncome,
+      totalOutcome,
+      profit,
+    });
+  } catch (error) {
+    console.error('Error calculating profit:', error);
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error,
+    });
+  }
+};
+
+// income by category 
+export const getIncomeByCategory = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: 'Please provide start date and end date',
+      });
+    }
+
+    // Get income transactions with categories
+    const incomeTransactions = await TransactionModel.findAll({
+      where: {
+        type: 'Income',
+        date: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+      include: [{ model: CategoryModel, where: { type: 'Income' } }],
+    });
+
+    // Calculate percentage of income by category
+    const incomeByCategory = {};
+    incomeTransactions.forEach((transaction) => {
+      const categoryName = transaction.Category.name;
+      incomeByCategory[categoryName] =
+        (incomeByCategory[categoryName] || 0) + transaction.amount;
+    });
+
+    const totalIncome = incomeTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+
+    return res.status(200).json({
+      incomeByCategory,
+      totalIncome,
+    });
+  } catch (error) {
+    console.error('Error calculating income by category:', error);
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error,
+    });
+  }
+};
+
+
+// outcome by category 
+export const getOutcomeByCategory = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: 'Please provide start date and end date',
+      });
+    }
+
+    // Get outcome transactions with categories
+    const outcomeTransactions = await TransactionModel.findAll({
+      where: {
+        type: 'Outcome',
+        date: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+      include: [{ model: CategoryModel, where: { type: 'Outcome' } }],
+    });
+
+    // Calculate percentage of outcome by category
+    const outcomeByCategory = {};
+    outcomeTransactions.forEach((transaction) => { 
+      const categoryName = transaction.Category.name;
+      outcomeByCategory[categoryName] =
+        (outcomeByCategory[categoryName] || 0) + transaction.amount;
+    });
+
+    const totalOutcome = outcomeTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+
+    return res.status(200).json({
+      outcomeByCategory,
+      totalOutcome,
+    });
+  } catch (error) {
+    console.error('Error calculating outcome by category:', error);
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error,
     });
   }
 };

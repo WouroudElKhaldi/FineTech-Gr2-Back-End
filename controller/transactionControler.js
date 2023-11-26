@@ -1,5 +1,6 @@
 // // Import necessary modules and models
 import db from "../models/index.js";
+import sequelize from 'sequelize'
 
 const { TransactionModel, UserModel, CategoryModel } = db;
 
@@ -18,15 +19,12 @@ export const createTransaction = async (req, res) => {
       categoryId,
     });
 
-    console.log("Transaction created successfully:", newTransaction);
-
     // Respond with a success message
     res.status(201).json({
       message: "Transaction created successfully",
       transaction: newTransaction,
     });
   } catch (error) {
-    console.error("Failed to create a new record: ", error);
 
     // Respond with an error message
     res.status(500).json({ error: "Internal Server Error" });
@@ -109,7 +107,6 @@ export const getTransactionsByCategory = async (req, res) => {
 
     res.status(200).json(transactions);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -132,7 +129,55 @@ export const getTransByType = async (req, res) => {
 
     res.status(200).json(transactions);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//get transaction between specific start and end date for report
+export const getTransactionsByDate = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: 'Please provide start and end date',
+      });
+    }
+
+    const transactions = await TransactionModel.findAll({
+      where: {
+        date: {
+          [sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+    });
+
+    const incomeTransactions = transactions.filter(
+      (transaction) => transaction.type === 'Income'
+    );
+    const outcomeTransactions = transactions.filter(
+      (transaction) => transaction.type === 'Outcome'
+    );
+
+    const sumIncome = incomeTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+    const sumOutcome = outcomeTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    ) 
+
+    return res.status(200).json({
+      incomeTransactions,
+      outcomeTransactions,
+      sumIncome,
+      sumOutcome,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      msg: 'Failed',
+      error: error,
+    });
   }
 };
