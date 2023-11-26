@@ -1,3 +1,4 @@
+import { comparePassword, generateToken, verifyToken , hashPassword } from '../middlewares/auth.js'
 import db from '../models/index.js'
 import fs from 'fs/promises'
 
@@ -13,12 +14,13 @@ export const createUser = async (req, res) => {
         return res.status(400).json({error : "Please upload an image"})
     }
     try {
+        const hashedPassword = await hashPassword(password);
         const newUser = await UserModel.create({
             firstName,
             lastName,
             dob,
             email,
-            password,
+            password: hashedPassword,
             image,
             role
         })
@@ -114,3 +116,59 @@ export const deleteUser = async (req, res) => {
         res.status(500).json({error: error})
     }
 }
+
+export const loginUser = async (req , res) => {
+    const {email , password} = req.body ;
+    try {
+        const user = await UserModel.findOne({where : {email : email}})
+        if (!user){
+            return res.status(401).json({
+                err : 'Invalid email or password'
+            })
+        }
+
+        const isPasswordValid = await comparePassword(password , user.password) 
+        if(!isPasswordValid){
+            return res.status(401).json({
+                err: 'Invalid password'
+            })
+        }
+        const token = generateToken(user)
+
+        res.status(200).json({
+            token
+        })
+    } catch (error) {
+        
+    }
+}
+
+export const authenticateUser = (req , res , next) =>{
+    const token = req.headers.authorization ;
+    if(!token){
+        return res.status(401).json({
+            err: 'Unauthorized'
+        })
+    }
+    const decodedToken = verifyToken(token) ;
+
+    if(!decodedToken){
+        return res.status(401).json({
+            err: 'Invalid token'
+        })
+    }
+    req.user = decodedToken ; 
+    next()
+}
+
+export const authorizeUser = (roles) => {
+    return (req, res, next) => {
+      const userRole = req.user.role;
+  
+      if (!roles.includes(userRole)) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+ 
+      next();
+    };
+  };

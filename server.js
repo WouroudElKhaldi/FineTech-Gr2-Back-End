@@ -8,6 +8,7 @@ import transactionRoutes from "./routes/transactionRoutes.js";
 import notificationRouter from "./routes/notificationRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
 import calculationRoute from './routes/calculationController.js'
+import userRoutes from "./routes/userRoutes.js";
 
 
 const app = express();
@@ -28,7 +29,7 @@ sequelize
 app.use("/transactions", router);
 app.use("/company" , companyRoutes)
 app.use("/goal" , goalRoutes)
-
+app.use('/user' , userRoutes)
 app.use("/transactions", transactionRoutes);
 app.use('/notifications' , notificationRouter )
 app.use('/categories' , categoryRouter)
