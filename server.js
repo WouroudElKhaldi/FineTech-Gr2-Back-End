@@ -2,6 +2,9 @@
 import sequelize from "./config/db.js";
 import express from "express";
 import router from "./routes/transactionRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
+import goalRoutes from "./routes/goalRoutes.js";
+
 
 const app = express();
 
@@ -18,6 +21,8 @@ sequelize
   });
 
 app.use("/transactions", router);
+app.use("/company" , companyRoutes)
+app.use("/goal" , goalRoutes)
 
 const port = process.env.PORT || 3000;
 
