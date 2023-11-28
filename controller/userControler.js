@@ -6,7 +6,7 @@ const { UserModel } = db
 
 export const createUser = async (req, res) => {
     const { firstName, lastName, dob, email, password, role } = req.body
-    const image = req.file.path
+    const image = req.file?.path
 
     if (!firstName || !lastName || !dob || !email || !password || !role)
         res.status(400).send('All fields are required!')

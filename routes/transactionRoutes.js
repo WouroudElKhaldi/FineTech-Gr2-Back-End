@@ -22,10 +22,10 @@ transactionRoutes.get("/get", getTransactions);
 transactionRoutes.post("/create", createTransaction);
 
 // // DELETE a Transaction
-transactionRoutes.delete("/:id", deleteTransaction);
+transactionRoutes.delete("/delete/:id", deleteTransaction);
 
 // // // // UPDATE a Transaction
-transactionRoutes.patch("/:id", updateTransaction);
+transactionRoutes.patch("/edit/:id", updateTransaction);
 
 // // // // get transaction by  categoryID
 transactionRoutes.get(

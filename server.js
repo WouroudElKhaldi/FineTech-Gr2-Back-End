@@ -7,7 +7,7 @@ import goalRoutes from "./routes/goalRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import notificationRouter from "./routes/notificationRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
-import calculationRoute from './routes/calculationController.js'
+import calculationRoute from './routes/calculationRoutes.js'
 import userRoutes from "./routes/userRoutes.js";
 
 
