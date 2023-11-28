@@ -39,7 +39,7 @@ export const showAllUsers = async (req, res) => {
   const offset = (page - 1) * pageSize;
   try {
     const users = await UserModel.findAll({
-      where: { role: "Admin" },
+      // where: { role: "Admin" },
       offset,
       limit: parseInt(pageSize),
     });
