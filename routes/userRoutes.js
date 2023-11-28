@@ -1,6 +1,7 @@
 import express from 'express'
-import { createUser, showAllUsers, showOneUser, updateUser, deleteUser, loginUser, authenticateUser, authorizeUser } from '../controller/userControler.js'
+import { createUser, showAllUsers, showOneUser, updateUser, deleteUser, loginUser } from '../controller/userControler.js'
 import {upload} from '../middlewares/upload.js'
+import {authenticateUser , authorizeUser} from '../middlewares/auth.js'
 
 const userRoutes = express.Router()
 

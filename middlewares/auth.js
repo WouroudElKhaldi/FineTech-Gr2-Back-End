@@ -1,36 +1,32 @@
-import jwt from 'jsonwebtoken' ;
-import bcrypt from 'bcrypt'
-import crypto from 'crypto'
+import { verifyToken } from '../utils/jwt.js'; 
 
-export const generateSecretKey = () => {
-    return crypto.randomBytes(20).toString('hex') ;
-
-}
-const secretKey = generateSecretKey()
-
-export const generateToken = (user) => {
-    const payload = {
-        id : user.id ,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
+export const authenticateUser = (req , res , next) =>{
+    console.log(req.headers.authorization)
+    const token = req.headers.authorization?.split(" ")[1];
+    if(!token){
+        return res.status(401).json({
+            err: 'Unauthorized'
+        })
     }
-    return jwt.sign(payload , "secretKey")
-}
+    const decodedToken = verifyToken(token) ;
 
-export const verifyToken = (token) => {
-    try {
-        return jwt.verify(token , "secretKey")
-    } catch (error){
-        return null
+    if(!decodedToken){
+        return res.status(401).json({
+            err: 'Invalid token'
+        })
     }
-}
+    req.user = decodedToken ; 
+    next()
+} // middleware 
 
-export const hashPassword = async (password) => {
-    const salt = 10 ;
-    return bcrypt.hash(password , salt)
-}
-
-export const comparePassword = async (password , hashedPassword) => {
-    return bcrypt.compare(password , hashedPassword)
-}
+export const authorizeUser = (roles) => {
+    return (req, res, next) => {
+      const userRole = req.user.role;
+  
+      if (!roles.includes(userRole)) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+ 
+      next();
+    };
+  }; // middleware 

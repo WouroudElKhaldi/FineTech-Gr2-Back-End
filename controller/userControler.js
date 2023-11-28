@@ -1,20 +1,20 @@
-import { comparePassword, generateToken, verifyToken , hashPassword } from '../middlewares/auth.js'
+import { comparePassword, generateToken , hashPassword} from '../utils/jwt.js'
 import db from '../models/index.js'
 import fs from 'fs/promises'
-
+import jwt from 'jsonwebtoken'
 const { UserModel } = db
 
 export const createUser = async (req, res) => {
     const { firstName, lastName, dob, email, password, role } = req.body
     const image = req.file.path
 
+    const hashedPassword = await hashPassword(password);
     if (!firstName || !lastName || !dob || !email || !password || !role)
-        res.status(400).send('All fields are required!')
+        return res.status(400).send('All fields are required!')
     if(!req.file) {
         return res.status(400).json({error : "Please upload an image"})
     }
     try {
-        const hashedPassword = await hashPassword(password);
         const newUser = await UserModel.create({
             firstName,
             lastName,
@@ -25,15 +25,15 @@ export const createUser = async (req, res) => {
             role
         })
         if (newUser)
-            res.status(200).json({ message: `New User ${firstName} ${lastName} has been created successfully!`, User: newUser })
+            return res.status(200).json({ message: `New User ${firstName} ${lastName} has been created successfully!`, User: newUser })
     }
     catch (error) {
-        res.status(500).send(error)
+        return res.status(500).send('error')
     }
 }
 
 export const showAllUsers = async (req, res) => {
-    const { page = 1, pageSize = 5 } = req.query
+    const { page = 1, pageSize = 10 } = req.query
     const offset = (page - 1) * pageSize
     try {
         const users = await UserModel.findAll({
@@ -126,49 +126,21 @@ export const loginUser = async (req , res) => {
                 err : 'Invalid email or password'
             })
         }
-
         const isPasswordValid = await comparePassword(password , user.password) 
         if(!isPasswordValid){
             return res.status(401).json({
                 err: 'Invalid password'
             })
         }
-        const token = generateToken(user)
-
-        res.status(200).json({
-            token
-        })
+        const token = jwt.sign( {
+            email: user.email ,
+            role: user.role,
+        } , "secretKey") ;
+        return res.cookie('token' , token , {httpOnly : true , sameSite : 'Strict' }).json({data : token})
+    
     } catch (error) {
-        
+         return res.json({
+            err : 'Failed' , error
+         })
     }
 }
-
-export const authenticateUser = (req , res , next) =>{
-    const token = req.headers.authorization ;
-    if(!token){
-        return res.status(401).json({
-            err: 'Unauthorized'
-        })
-    }
-    const decodedToken = verifyToken(token) ;
-
-    if(!decodedToken){
-        return res.status(401).json({
-            err: 'Invalid token'
-        })
-    }
-    req.user = decodedToken ; 
-    next()
-}
-
-export const authorizeUser = (roles) => {
-    return (req, res, next) => {
-      const userRole = req.user.role;
-  
-      if (!roles.includes(userRole)) {
-        return res.status(403).json({ error: 'Forbidden' });
-      }
- 
-      next();
-    };
-  };
