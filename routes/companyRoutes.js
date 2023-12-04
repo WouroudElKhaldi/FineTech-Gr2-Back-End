@@ -1,12 +1,22 @@
 import express from "express";
-import { addCompany, deleteCompany, editCompany, getCompany } from "../controller/companyController.js";
+import {
+  addCompany,
+  deleteCompany,
+  editCompany,
+  getCompany,
+} from "../controller/companyController.js";
 
 const companyRoutes = express.Router();
+// Add a company
+companyRoutes.post("/add-company", addCompany);
 
-companyRoutes.post('/add', addCompany);
-companyRoutes.delete('/delete',deleteCompany);
-companyRoutes.patch('/edit',editCompany)
-companyRoutes.get('/get',getCompany)
+// Delete a company
+companyRoutes.delete("/delete-company", deleteCompany);
+
+// Edit a company
+companyRoutes.patch("/edit-company", editCompany);
+
+// Get a company
+companyRoutes.get("/get-company", getCompany);
 
 export default companyRoutes;
-

@@ -1,17 +1,23 @@
 import express from "express";
 import {
-    addNotification ,
-    viewAllNotifications ,
-    deleteNotification,
-    paginationNotification
-} from '../controller/notificationController.js'
+  addNotification,
+  viewAllNotifications,
+  deleteNotification,
+  paginationNotification,
+} from "../controller/notificationController.js";
 
-const notificationRouter = express.Router() ;
+const notificationRouter = express.Router();
 
-//add notification 
-notificationRouter.post('/add' , addNotification)
-notificationRouter.get('/paginate' ,paginationNotification )
-notificationRouter.get('/view' , viewAllNotifications)
-notificationRouter.delete('/delete' , deleteNotification)
+// Add a notification
+notificationRouter.post("/add-notification", addNotification);
 
-export default notificationRouter ; 
+// Paginate notifications
+notificationRouter.get("/paginate-notifications", paginationNotification);
+
+// View all notifications
+notificationRouter.get("/view-notifications", viewAllNotifications);
+
+// Delete a notification
+notificationRouter.delete("/delete-notification", deleteNotification);
+
+export default notificationRouter;

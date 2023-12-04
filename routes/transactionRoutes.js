@@ -7,36 +7,33 @@ import {
   updateTransaction,
   getTransactionsByCategory,
   getTransByType,
-  getTransactionsByDate
+  getTransactionsByDate,
 } from "../controller/transactionControler.js";
 
 const transactionRoutes = express.Router();
 
-// // GET all Transaction
-transactionRoutes.get("/get", getTransactions);
+// GET all transactions
+transactionRoutes.get("/view-all", getTransactions);
 
-// // GET a single Transaction
-// routransactionRoutester.get("/:id", getTransaction);
-
-// // POST a new Transaction
-transactionRoutes.post("/create", createTransaction);
-
-// // DELETE a Transaction
-transactionRoutes.delete("/delete/:id", deleteTransaction);
-
-// // // // UPDATE a Transaction
-transactionRoutes.patch("/edit/:id", updateTransaction);
-
-// // // // get transaction by  categoryID
+// GET transactions by categoryID
 transactionRoutes.get(
-  "/transactionsByCategory/:categoryId",
+  "/view-by-category/:categoryId",
   getTransactionsByCategory
 );
 
-// get transaction by date 
-transactionRoutes.post('/getByDate' , getTransactionsByDate)
+// GET transactions by date
+transactionRoutes.post("/view-by-date", getTransactionsByDate);
 
-//// //// ///  get transaction by Type
-transactionRoutes.get("/getByType/:type", getTransByType);
+// GET transactions by type
+transactionRoutes.get("/view-by-type/:type", getTransByType);
+
+// POST a new transaction
+transactionRoutes.post("/add", createTransaction);
+
+// DELETE a transaction
+transactionRoutes.delete("/delete/:id", deleteTransaction);
+
+// UPDATE a transaction
+transactionRoutes.patch("/edit/:id", updateTransaction);
 
 export default transactionRoutes;
