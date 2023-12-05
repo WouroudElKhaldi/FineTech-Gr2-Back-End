@@ -9,12 +9,12 @@ import notificationRouter from "./routes/notificationRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
 import calculationRoute from './routes/calculationRoutes.js'
 import userRoutes from "./routes/userRoutes.js";
-
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json());
-
+app.use(cookieParser())
 // Sync the models only once when the application starts
 sequelize
   .sync()

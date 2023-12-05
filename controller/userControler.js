@@ -132,11 +132,8 @@ export const loginUser = async (req , res) => {
                 err: 'Invalid password'
             })
         }
-        const token = jwt.sign( {
-            email: user.email ,
-            role: user.role,
-        } , "secretKey") ;
-        return res.cookie('token' , token , {httpOnly : true , sameSite : 'Strict' }).json({data : token})
+        const token = generateToken(user) ;
+        return res.cookie('token' , token , {httpOnly : true , sameSite : 'Strict' })
     
     } catch (error) {
          return res.json({

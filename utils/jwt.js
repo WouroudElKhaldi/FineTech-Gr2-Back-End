@@ -8,7 +8,7 @@ export const generateToken = (user) => {
         email: user.email ,
         role: user.role,
     }
-    return jwt.sign(payload , "secretKey")
+    return jwt.sign(payload , "secretKey" , {expiresIn: '4h'})
 } // utils
 
 export const verifyToken = (token) => {
