@@ -133,7 +133,7 @@ export const loginUser = async (req , res) => {
             })
         }
         const token = generateToken(user) ;
-        return res.cookie('token' , token , {httpOnly : true , sameSite : 'Strict' })
+        return res.cookie('token' , token , {httpOnly : true , sameSite : 'None' , secure: true })
     
     } catch (error) {
          return res.json({
