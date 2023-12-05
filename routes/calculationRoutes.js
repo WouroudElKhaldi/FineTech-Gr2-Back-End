@@ -1,23 +1,22 @@
 import express from "express";
 import {
-    getTotalUsers,
-    getUsersByRole,
-    sumOutcome,
-    sumIncome ,
-    calculateProfit ,
-    getIncomeByCategory,
-    getOutcomeByCategory
-} from '../controller/calculationController.js'
+  getTotalUsers,
+  getUsersByRole,
+  sumOutcome,
+  sumIncome,
+  calculateProfit,
+  getIncomeByCategory,
+  getOutcomeByCategory,
+} from "../controller/calculationController.js";
 
+const calculationRoute = express.Router();
 
-const calculationRoute = express.Router() 
+calculationRoute.get("/total-users", getTotalUsers);
+calculationRoute.get("/users-by-role", getUsersByRole);
+calculationRoute.post("/calculate-profit", calculateProfit);
+calculationRoute.get("/sum-income", sumIncome);
+calculationRoute.get("/sum-outcome", sumOutcome);
+calculationRoute.post("/income-by-category", getIncomeByCategory);
+calculationRoute.post("/outcome-by-category", getOutcomeByCategory);
 
-calculationRoute.get('/users/num' , getTotalUsers)
-calculationRoute.get('/users/role' , getUsersByRole)
-calculationRoute.post('/profit' , calculateProfit)
-calculationRoute.get('/incomeAmount' , sumIncome)
-calculationRoute.get('/outcomeAmount' , sumOutcome)
-calculationRoute.post('/incomeByCategory' , getIncomeByCategory)
-calculationRoute.post('/outcomeByCategory' , getOutcomeByCategory)
-
-export default calculationRoute ;
+export default calculationRoute;
