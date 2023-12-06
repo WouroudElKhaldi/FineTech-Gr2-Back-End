@@ -25,15 +25,15 @@ transactionRoutes.post(
 transactionRoutes.post("/view-by-date", getTransactionsByDate);
 
 // GET transactions by type
-transactionRoutes.get("/view-by-type/:type", getTransByType);
+transactionRoutes.post("/view-by-type", getTransByType);
 
 // POST a new transaction
 transactionRoutes.post("/add", createTransaction);
 
 // DELETE a transaction
-transactionRoutes.delete("/delete/:id", deleteTransaction);
+transactionRoutes.delete("/delete", deleteTransaction);
 
 // UPDATE a transaction
-transactionRoutes.patch("/edit/:id", updateTransaction);
+transactionRoutes.patch("/edit", updateTransaction);
 
 export default transactionRoutes;

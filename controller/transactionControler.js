@@ -52,7 +52,7 @@ export const getTransactions = async (req, res) => {
 
 //delete transaction
 export const deleteTransaction = async (req, res) => {
-  const { id } = req.params;
+  const id  = req.body.id;
 
   try {
     const deleteTransaction = await TransactionModel.findByPk(id);
@@ -69,7 +69,7 @@ export const deleteTransaction = async (req, res) => {
 
 //update transaction
 export const updateTransaction = async (req, res) => {
-  const { id } = req.params;
+  const  id  = req.body.id;
   const { type, date, amount, userId, categoryId } = req.body;
   try {
     const UpdateTransaction = await TransactionModel.findByPk(id);
@@ -92,7 +92,7 @@ export const updateTransaction = async (req, res) => {
 
 //// // // // get transaction by  categoryID
 export const getTransactionsByCategory = async (req, res) => {
-  const { categoryId } = req.body;
+  const categoryId = req.body.categoryId;
 
   try {
     const { page = 1, pageSize = 5 } = req.query;
@@ -113,7 +113,7 @@ export const getTransactionsByCategory = async (req, res) => {
 
 //// // // // get transaction by  category Type
 export const getTransByType = async (req, res) => {
-  const { type } = req.params;
+  const  type  = req.body.type;
 
   try {
     const { page = 1, pageSize = 5 } = req.query;
