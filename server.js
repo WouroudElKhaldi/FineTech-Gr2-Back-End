@@ -10,9 +10,15 @@ import categoryRouter from "./routes/categoryRoutes.js";
 import calculationRoute from "./routes/calculationRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 const app = express();
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow only your frontend origin
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser())
 // Sync the models only once when the application starts
@@ -28,7 +34,7 @@ sequelize
 app.use("/transactions", router);
 app.use("/companies", companyRoutes);
 app.use("/goals", goalRoutes);
-app.use("/users", userRoutes);
+app.use("/api/auth", userRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/notifications", notificationRouter);
 app.use("/categories", categoryRouter);

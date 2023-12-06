@@ -42,7 +42,3 @@ export const authorizeUser = (roles) => {
   export const loggedInUser = (req , res) => {
         res.json({user: req.user})
   }
-
-  export const logout = async (req , res) =>{
-    
-  }

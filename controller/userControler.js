@@ -1,7 +1,6 @@
 import { comparePassword, generateToken , hashPassword} from '../utils/jwt.js'
 import db from '../models/index.js'
 import fs from 'fs/promises'
-import jwt from 'jsonwebtoken'
 const { UserModel } = db
 
 export const createUser = async (req, res) => {
@@ -48,7 +47,7 @@ export const showAllUsers = async (req, res) => {
 }
 
 export const showOneUser = async (req, res) => {
-    const id = req.params.id
+    const id = req.body.id
     try {
         const user = await UserModel.findOne({ where: { id: id } })
         if (user)
@@ -117,8 +116,9 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const loginUser = async (req , res) => {
+export const login = async (req , res) => {
     const {email , password} = req.body ;
+
     try {
         const user = await UserModel.findOne({where : {email : email}})
         if (!user){
@@ -133,11 +133,27 @@ export const loginUser = async (req , res) => {
             })
         }
         const token = generateToken(user) ;
-        return res.cookie('token' , token , {httpOnly : true , sameSite : 'None' , secure: true })
+        return res.cookie('token' , token , {httpOnly : true , sameSite : 'None' , secure: true }).json({
+            user: user
+        })
     
     } catch (error) {
          return res.json({
             err : 'Failed' , error
          })
+    }
+}
+
+export const logout = async (req , res) =>{
+    try {
+        clearCookie(res, 'token');
+
+        return res.status(200).json({
+            message: 'Logout successful',
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: 'Internal Server Error',
+        });
     }
 }

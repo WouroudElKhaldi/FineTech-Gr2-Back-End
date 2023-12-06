@@ -5,7 +5,8 @@ import {
   showOneUser,
   updateUser,
   deleteUser,
-  loginUser,
+  login,
+  logout
 } from "../controller/userControler.js";
 import { upload } from "../middlewares/upload.js";
 import { authenticateUser, authorizeUser , loggedInUser } from "../middlewares/auth.js";
@@ -24,7 +25,7 @@ userRoutes.get(
 );
 
 // Show one user
-userRoutes.get("/view-one/:id", showOneUser);
+userRoutes.get("/user", showOneUser);
 
 // Update a user
 userRoutes.patch("/update", upload.single("image"), updateUser);
@@ -33,6 +34,8 @@ userRoutes.patch("/update", upload.single("image"), updateUser);
 userRoutes.delete("/delete", deleteUser);
 
 // Login user
-userRoutes.post("/login", loginUser , loggedInUser);
+userRoutes.post("/logged-in-user", authenticateUser , loggedInUser);
+userRoutes.post("/login",  login);
+userRoutes.post("/login",  logout);
 
 export default userRoutes;
