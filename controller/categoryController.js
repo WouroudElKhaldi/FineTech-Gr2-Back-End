@@ -147,7 +147,7 @@ export const paginationCategory = async (req, res) => {
 //get category by type 
 export const getCategoriesByType = async (req, res) => {
     try {
-      const { type } = req.params;
+      const type = req.body.type;
   
       if (!type || !['Income', 'Outcome'].includes(type)) {
         return res.status(400).json({

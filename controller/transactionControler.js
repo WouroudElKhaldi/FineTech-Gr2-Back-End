@@ -92,7 +92,7 @@ export const updateTransaction = async (req, res) => {
 
 //// // // // get transaction by  categoryID
 export const getTransactionsByCategory = async (req, res) => {
-  const { categoryId } = req.params;
+  const { categoryId } = req.body;
 
   try {
     const { page = 1, pageSize = 5 } = req.query;

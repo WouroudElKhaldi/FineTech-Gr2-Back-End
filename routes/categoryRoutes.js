@@ -20,7 +20,7 @@ categoryRouter.get("/view-all-categories", getAllCategories);
 categoryRouter.get("/paginate-categories", paginationCategory);
 
 // Get categories by type
-categoryRouter.get("/view-categories/by-type/:type", getCategoriesByType);
+categoryRouter.post("/view-categories/by-type", getCategoriesByType);
 
 // Edit a category
 categoryRouter.patch("/edit-category", editCategory);

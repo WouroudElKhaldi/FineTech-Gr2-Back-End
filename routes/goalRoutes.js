@@ -10,21 +10,21 @@ import {
 
 const goalRoutes = express.Router();
 // Add a goal
-goalRoutes.post("/add-goal", addGoal);
+goalRoutes.post("/add", addGoal);
 
 // Delete a goal
-goalRoutes.delete("/delete-goal", deleteGoal);
+goalRoutes.delete("/", deleteGoal);
 
 // Edit a goal
-goalRoutes.patch("/edit-goal", editGoal);
+goalRoutes.patch("/", editGoal);
 
 // Get all goals
-goalRoutes.get("/get-goals", getGoals);
+goalRoutes.get("/", getGoals);
 
 // Get a specific goal by ID
-goalRoutes.get("/get-goal-by-id", getGoalById);
+goalRoutes.post("/byId", getGoalById);
 
 // Get goals by date
-goalRoutes.post("/get-goals-by-date", getGoalsByDate);
+goalRoutes.post("/byDate", getGoalsByDate);
 
 export default goalRoutes;
