@@ -46,7 +46,7 @@ export const showOneUser = async (req, res) => {
             res.status(404).send(`User ${id} does not exist!`)
     }
     catch (error) {
-        res.status(500).send(error)
+        res.status(500).send(error.message)
     }
 }
 

@@ -25,7 +25,7 @@ userRoutes.get(
 );
 
 // Show one user
-userRoutes.get("/user", showOneUser);
+userRoutes.post("/user", showOneUser);
 
 // Update a user
 userRoutes.patch("/update", upload.single("image"), updateUser);
