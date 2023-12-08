@@ -4,15 +4,10 @@ import fs from 'fs/promises'
 const { UserModel } = db
 
 export const createUser = async (req, res) => {
-    const { firstName, lastName, dob, email, password, role } = req.body
-    const image = req.file?.path
-
+    const { firstName, lastName, dob, email, password, role , image } = req.body
     const hashedPassword = await hashPassword(password);
     if (!firstName || !lastName || !dob || !email || !password || !role)
         return res.status(400).send('All fields are required!')
-    if(!req.file) {
-        return res.status(400).json({error : "Please upload an image"})
-    }
     try {
         const newUser = await UserModel.create({
             firstName,
@@ -20,7 +15,7 @@ export const createUser = async (req, res) => {
             dob,
             email,
             password: hashedPassword,
-            image,
+            image : image ,
             role
         })
         if (newUser)
@@ -32,13 +27,8 @@ export const createUser = async (req, res) => {
 }
 
 export const showAllUsers = async (req, res) => {
-    const { page = 1, pageSize = 10 } = req.query
-    const offset = (page - 1) * pageSize
     try {
-        const users = await UserModel.findAll({
-            offset,
-            limit: parseInt(pageSize)
-        })
+        const users = await UserModel.findAll()
         res.status(200).json({ Users: users })
     }
     catch (error) {
@@ -63,8 +53,7 @@ export const showOneUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const id = req.body.id;
     const { firstName, lastName, dob, email, password, role } = req.body;
-    const newImage = req.file?.path;
-
+    const newImage = req.body.image
     if (!firstName || !lastName || !dob || !email || !password || !role) {
         res.status(400).send('All fields are required!');
         return;
@@ -93,10 +82,10 @@ export const updateUser = async (req, res) => {
                 where: { id: id }
             }
         ); 
-        if (req.file) {
+        if (req.body.image) {
             await fs.unlink(oldImage);
         }
-        res.status(200).send(`User ${user.firstName} has been updated successfully!`);
+        res.status(200).send(`User ${user.firstName} has been updated successfully!` , editUser);
     } catch (error) {
         res.status(500).send(error);
     }

@@ -19,8 +19,8 @@ userRoutes.post("/create", upload.single("image"), createUser);
 // Show all users
 userRoutes.get(
   "/view-all",
-  authenticateUser,
-  authorizeUser(["Admin"]),
+  // authenticateUser,
+  // authorizeUser(["Admin"]),
   showAllUsers
 );
 
@@ -34,8 +34,8 @@ userRoutes.patch("/update", upload.single("image"), updateUser);
 userRoutes.delete("/delete", deleteUser);
 
 // Login user
-userRoutes.post("/logged-in-user", authenticateUser , loggedInUser);
+userRoutes.get("/logged-in-user", authenticateUser , loggedInUser);
 userRoutes.post("/login",  login);
-userRoutes.post("/login",  logout);
+userRoutes.post("/logout",  logout);
 
 export default userRoutes;

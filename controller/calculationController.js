@@ -39,7 +39,7 @@ export const getUsersByRole = async (req, res) => {
   
       return res.status(200).json({
         msg: 'Fetched number of users by role successfully',
-        data: usersByRoleWithPercentage,
+        data: usersByRoleWithPercentage,totalUsers
       });
     } catch (error) {
       console.error('Failed to get number of users by role:', error);
