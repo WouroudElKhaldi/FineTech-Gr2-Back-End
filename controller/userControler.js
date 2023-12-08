@@ -5,24 +5,25 @@ const { UserModel } = db
 
 export const createUser = async (req, res) => {
     const { firstName, lastName, dob, email, password, role , image } = req.body
-    const hashedPassword = await hashPassword(password);
-    if (!firstName || !lastName || !dob || !email || !password || !role)
-        return res.status(400).send('All fields are required!')
     try {
+        if (!firstName || !lastName || !dob || !email || !password || !role){
+            return res.status(400).json('All fields are required!')
+        }
+        const hashedPassword = await hashPassword(password);
         const newUser = await UserModel.create({
             firstName,
             lastName,
             dob,
             email,
             password: hashedPassword,
-            image : image ,
+            image ,
             role
         })
         if (newUser)
             return res.status(200).json({ message: `New User ${firstName} ${lastName} has been created successfully!`, User: newUser })
     }
     catch (error) {
-        return res.status(500).send('error')
+        return res.status(500).json({'error': error})
     }
 }
 

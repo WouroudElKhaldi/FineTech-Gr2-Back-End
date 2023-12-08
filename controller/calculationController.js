@@ -1,5 +1,5 @@
 import db from "../models/index.js";
-const {UserModel , TransactionModel , CategoryModel} = db ;
+const {UserModel , TransactionModel , CategoryModel , CompanyModel} = db ;
 import sequelize from 'sequelize';
 
 // users number in total 
@@ -117,10 +117,10 @@ export const calculateProfit = async (req, res) => {
         error: 'Please provide start date and end date',
       });
     }
-
+    const company = await CompanyModel.findByPk(1) 
     const transactions = await TransactionModel.findAll({
       where: {
-        date: {
+        createdAt: {
           [sequelize.Op.between]: [startDate, endDate],
         },
       },
@@ -139,11 +139,15 @@ export const calculateProfit = async (req, res) => {
     );
 
     const profit = totalIncome - totalOutcome;
+    const pureProfit = 0.1 * profit 
+    const capitalNow = company.capital + pureProfit 
 
     return res.status(200).json({
       totalIncome,
       totalOutcome,
       profit,
+      pureProfit ,
+      capitalNow
     });
   } catch (error) {
     console.error('Error calculating profit:', error);
