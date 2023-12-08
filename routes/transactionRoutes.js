@@ -13,13 +13,10 @@ import {
 const transactionRoutes = express.Router();
 
 // GET all transactions
-transactionRoutes.post("/view-all", getTransactions);
+transactionRoutes.get("/view-trans", getTransactions);
 
 // GET transactions by categoryID
-transactionRoutes.post(
-  "/view-by-category/",
-  getTransactionsByCategory
-);
+transactionRoutes.post("/view-by-category/", getTransactionsByCategory);
 
 // GET transactions by date
 transactionRoutes.post("/view-by-date", getTransactionsByDate);

@@ -16,7 +16,6 @@ export default (sequelize, DataTypes) => {
   Transaction.init(
     {
       type: DataTypes.ENUM("Income", "Outcome"),
-      date: DataTypes.DATE,
       amount: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
