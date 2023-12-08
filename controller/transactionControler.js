@@ -8,12 +8,11 @@ const { TransactionModel, UserModel, CategoryModel } = db;
 export const createTransaction = async (req, res) => {
   try {
     // Destructure data from request body
-    const { type, date, amount, userId, categoryId } = req.body;
+    const { type, amount, userId, categoryId } = req.body;
 
     // Create a new transaction record
     const newTransaction = await TransactionModel.create({
       type,
-      date,
       amount,
       userId,
       categoryId,
@@ -27,7 +26,7 @@ export const createTransaction = async (req, res) => {
   } catch (error) {
 
     // Respond with an error message
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -35,14 +34,14 @@ export const createTransaction = async (req, res) => {
 export const getTransactions = async (req, res) => {
   try {
     // pagination
-    const { page = 1, pageSize = 5 } = req.query;
-    const offset = (page - 1) * pageSize;
+    // const { page = 1, pageSize = 5 } = req.query;
+    // const offset = (page - 1) * pageSize;
 
     const gettransactions = await TransactionModel.findAll({
       include: [UserModel, CategoryModel],
       //pagination
-      offset,
-      limit: parseInt(pageSize),
+      // offset,
+      // limit: parseInt(pageSize),
     });
     res.status(200).json(gettransactions);
   } catch (error) {
@@ -70,7 +69,7 @@ export const deleteTransaction = async (req, res) => {
 //update transaction
 export const updateTransaction = async (req, res) => {
   const  id  = req.body.id;
-  const { type, date, amount, userId, categoryId } = req.body;
+  const { type, amount, userId, categoryId } = req.body;
   try {
     const UpdateTransaction = await TransactionModel.findByPk(id);
     if (!UpdateTransaction) {
@@ -79,7 +78,7 @@ export const updateTransaction = async (req, res) => {
 
     await UpdateTransaction.update({
       type,
-      date,
+    
       amount,
       userId,
       categoryId,
