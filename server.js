@@ -1,7 +1,7 @@
 // In your main application file (e.g., server.js)
 import sequelize from "./config/db.js";
 import express from "express";
-// import router from "./routes/transactionRoutes.js";
+import reportRouter from './routes/reportRoutes.js' ;
 import companyRoutes from "./routes/companyRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
@@ -11,6 +11,7 @@ import calculationRoute from "./routes/calculationRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
 const app = express();
 const corsOptions = {
   origin: "http://localhost:3000", // Allow only your frontend origin
@@ -39,6 +40,7 @@ app.use("/api/transactionss", transactionRoutes);
 app.use("/api/notifications", notificationRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/calculations", calculationRoute);
+app.use('/', reportRouter)
 
 const port = process.env.PORT || 4000;
 
