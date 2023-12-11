@@ -136,14 +136,14 @@ export const login = async (req , res) => {
 
 export const logout = async (req , res) =>{
     try {
-        clearCookie(res, 'token');
+        res.clearCookie(res, 'token');
 
         return res.status(200).json({
             message: 'Logout successful',
         });
     } catch (error) {
         return res.status(500).json({
-            error: 'Internal Server Error',
+            error: error.message,
         });
     }
 }
