@@ -9,7 +9,7 @@ import {
 const notificationRouter = express.Router();
 
 // Add a notification
-notificationRouter.post("/add-notification", addNotification);
+notificationRouter.post("/add", addNotification);
 
 // Paginate notifications
 notificationRouter.get("/paginate-notifications", paginationNotification);

@@ -91,21 +91,24 @@ export const updateTransaction = async (req, res) => {
 
 //// // // // get transaction by  categoryID
 export const getTransactionsByCategory = async (req, res) => {
-  const categoryId = req.body.categoryId;
+  const categoryId = 8; // Specific categoryId
 
   try {
-    const { page = 1, pageSize = 5 } = req.query;
-    const offset = (page - 1) * pageSize;
-
     const transactions = await TransactionModel.findAll({
       where: { categoryId: categoryId },
       include: [UserModel, CategoryModel],
-      offset,
-      limit: parseInt(pageSize),
     });
 
-    res.status(200).json(transactions);
+    // Extract relevant data for Chart.js
+    const chartData = transactions.map(transaction => ({
+      date: transaction.createdAt, // Assuming you have a date property in your Transaction model
+      income: transaction.type === 'Income' ? transaction.amount : 0,
+      outcome: transaction.type === 'Outcome' ? transaction.amount : 0,
+    }));
+
+    res.status(200).json(chartData);
   } catch (error) {
+    console.error('Error fetching transactions by category:', error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

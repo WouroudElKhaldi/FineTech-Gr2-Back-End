@@ -11,7 +11,7 @@ import {
 const categoryRouter = express.Router();
 
 // Add a category
-categoryRouter.post("/add-category", addCategory);
+categoryRouter.post("/add", addCategory);
 
 // Get all categories without pagination
 categoryRouter.get("/view-all-categories", getAllCategories);

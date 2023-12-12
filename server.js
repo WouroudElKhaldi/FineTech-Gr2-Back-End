@@ -11,6 +11,8 @@ import calculationRoute from "./routes/calculationRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import http from "http";
+import { Server } from "socket.io";
 
 const app = express();
 const corsOptions = {
@@ -19,9 +21,31 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers choke on 204
 };
 
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("User Connected");
+  socket.on("send_message", (data) => {
+    socket.emit("receive_message", data);
+  });
+  socket.on("disconnection", () => {
+    socket.disconnect();
+    console.log("User Disconnected!");
+  });
+});
+
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/images', express.static(process.cwd() + "/images"))
 // Sync the models only once when the application starts
 sequelize
   .sync()

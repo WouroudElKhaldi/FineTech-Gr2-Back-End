@@ -14,9 +14,9 @@ companyRoutes.post("/add-company", addCompany);
 companyRoutes.delete("/delete-company", deleteCompany);
 
 // Edit a company
-companyRoutes.patch("/edit-company", editCompany);
+companyRoutes.patch("/", editCompany);
 
 // Get a company
-companyRoutes.get("/get-company", getCompany);
+companyRoutes.post("/", getCompany);
 
 export default companyRoutes;

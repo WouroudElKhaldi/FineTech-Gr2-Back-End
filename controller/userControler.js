@@ -68,14 +68,14 @@ export const updateUser = async (req, res) => {
             res.status(404).send(`User ${id} does not exist!`);
             return;
         }
-
+        const hashedPassword = await hashPassword(password);
         const editUser = await UserModel.update(
             {
                 firstName,
                 lastName,
                 dob,
                 email,
-                password,
+                password: hashedPassword,
                 image: newImage,
                 role
             },
@@ -83,12 +83,11 @@ export const updateUser = async (req, res) => {
                 where: { id: id }
             }
         ); 
-        if (req.body.image) {
-            await fs.unlink(oldImage);
-        }
-        res.status(200).send(`User ${user.firstName} has been updated successfully!` , editUser);
+        res.status(200).json({
+            message : `User ${user.firstName} has been updated successfully!` ,
+             editUser});
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({error});  
     }
 };
 

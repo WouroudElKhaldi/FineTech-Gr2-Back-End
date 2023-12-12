@@ -7,6 +7,9 @@ export const generateToken = (user) => {
         lastName: user.lastName,
         email: user.email ,
         role: user.role,
+        image : user.image , 
+        dob: user.dob ,
+        password: user.password
     }
     return jwt.sign(payload , "secretKey" , {expiresIn: '4h'})
 } // utils
@@ -17,7 +20,7 @@ export const verifyToken = (token) => {
     } catch (error){
         return null
     }
-} // utils
+} // utilsx
 
 export const comparePassword = async (password , hashedPassword) => {
     return bcrypt.compare(password , hashedPassword)

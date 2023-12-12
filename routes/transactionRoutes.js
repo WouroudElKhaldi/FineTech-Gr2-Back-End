@@ -16,7 +16,7 @@ const transactionRoutes = express.Router();
 transactionRoutes.get("/view-trans", getTransactions);
 
 // GET transactions by categoryID
-transactionRoutes.post("/view-by-category/", getTransactionsByCategory);
+transactionRoutes.post("/by-category", getTransactionsByCategory);
 
 // GET transactions by date
 transactionRoutes.post("/view-by-date", getTransactionsByDate);
